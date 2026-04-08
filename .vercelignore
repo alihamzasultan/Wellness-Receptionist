@@ -1,0 +1,13 @@
+node_modules
+.env
+vite_log.txt
+vite_log_utf8.txt
+browser_errors.txt
+browser_errors_utf8.txt
+check_console.js
+lint_output.txt
+lint_output_utf8.txt
+tsc_output.txt
+tsc_output_2.txt
+tsc_output_3.txt
+tsc_output_utf8.txt
