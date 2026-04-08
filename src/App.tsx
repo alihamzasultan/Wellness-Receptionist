@@ -40,7 +40,7 @@ function AppContent() {
         const handleCancelEvent = (e: any) => {
             const apt = e.detail;
             const method = apt.canceled_via_sms ? 'via SMS' : '';
-            const msg = `Patient ${apt.patient_name || 'unknown'} cancelled their session ${method}.`.replace('  ', ' ');
+            const msg = `Patient ${apt.patient_name || 'unknown'} cancelled their appointment ${method}.`.replace('  ', ' ');
             setToast({ message: msg, type: 'danger' });
             addNotification({
                 type: 'CANCELLED',
@@ -51,7 +51,7 @@ function AppContent() {
         };
         const handleConfirmEvent = (e: any) => {
             const apt = e.detail;
-            const msg = `Patient ${apt.patient_name || 'unknown'} confirmed their session via SMS.`;
+            const msg = `Patient ${apt.patient_name || 'unknown'} confirmed their appointment via SMS.`;
             setToast({ message: msg, type: 'success' });
             addNotification({
                 type: 'CONFIRMED',

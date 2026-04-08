@@ -205,7 +205,7 @@ function AutomationTab({ settings, onSave, isSaving, isAdmin }: { settings: Clin
                         <PillSelector options={['sms']} selected={localSettings.followup_channels} disabled={!isAdmin} onChange={(selected) => setLocalSettings({ ...localSettings, followup_channels: selected })} />
                     </SettingRow>
 
-   
+
                 </div>
             )}
 

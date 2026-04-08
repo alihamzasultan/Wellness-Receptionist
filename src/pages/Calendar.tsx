@@ -55,7 +55,7 @@ export function CalendarView() {
             <header style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <div>
                     <h1 style={{ fontSize: '28px', fontWeight: '800', letterSpacing: '-0.02em' }}>Schedule Calendar</h1>
-                    <p style={{ color: 'var(--muted)', marginTop: '4px' }}>Manage clinic sessions and availability.</p>
+                    <p style={{ color: 'var(--muted)', marginTop: '4px' }}>Manage clinic appointments and availability.</p>
                 </div>
                 
                 <div style={{ display: 'flex', gap: '12px' }}>

@@ -31,23 +31,7 @@ export function CallLogs() {
                     <h1 className="page-title">Real-Time Call Logs</h1>
                     <p className="page-subtitle">Monitor incoming AI-handled calls and their outcomes in real-time.</p>
                 </div>
-                {selectedLocation && (
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        padding: '8px 16px',
-                        backgroundColor: 'var(--primary-light)',
-                        borderRadius: '20px',
-                        border: '1px solid var(--primary)',
-                        color: 'var(--primary)',
-                        fontWeight: '600',
-                        fontSize: '14px',
-                        marginBottom: '8px'
-                    }}>
-                        <MapPin size={16} />
-                    </div>
-                )}
+
             </header>
 
             <div className="table-container">
