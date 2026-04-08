@@ -175,10 +175,6 @@ function RemindersTab({ settings, onSave, isSaving, isAdmin }: { settings: Clini
             </SettingRow>
 
 
-            <SettingRow title="Message Template" description="The exact wording sent out to patients as a reminder." isLast vertical>
-                <TokenEditor value={localSettings.reminder_template} onChange={(val) => setLocalSettings({ ...localSettings, reminder_template: val })} placeholder="Enter reminder template..." />
-            </SettingRow>
-
             <FooterSaveActions onSave={onSave} isSaving={isSaving} isAdmin={isAdmin} localSettings={localSettings} />
         </div>
     );
