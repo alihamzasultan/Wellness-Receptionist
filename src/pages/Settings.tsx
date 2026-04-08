@@ -202,7 +202,7 @@ function AutomationTab({ settings, onSave, isSaving, isAdmin }: { settings: Clin
                     </SettingRow>
 
                     <SettingRow title="Delivery Channels" description="The communication methods allowed for sending out follow-ups.">
-                        <PillSelector options={['sms', 'email']} selected={localSettings.followup_channels} disabled={!isAdmin} onChange={(selected) => setLocalSettings({ ...localSettings, followup_channels: selected })} />
+                        <PillSelector options={['sms']} selected={localSettings.followup_channels} disabled={!isAdmin} onChange={(selected) => setLocalSettings({ ...localSettings, followup_channels: selected })} />
                     </SettingRow>
 
                     <SettingRow title="Feedback Template" description="The wording used asking patients for their feedback." isLast vertical>
