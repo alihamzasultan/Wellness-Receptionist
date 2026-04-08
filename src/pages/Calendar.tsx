@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import { useAppointments } from '../hooks/useAppointments';
 import { useSettings } from '../hooks/useSettings';
-import { format, isSameDay, startOfWeek, endOfWeek, eachDayOfInterval, addDays, subDays, isToday } from 'date-fns';
+import { format, isSameDay, startOfWeek, endOfWeek, eachDayOfInterval, addDays, subDays, isToday, parseISO } from 'date-fns';
 import { ChevronLeft, ChevronRight, List, Grid, Columns } from 'lucide-react';
 import 'react-calendar/dist/Calendar.css';
 
@@ -15,11 +15,14 @@ export function CalendarView() {
     const appointmentsOnDate = (d: Date) => appointments.filter(a => {
         if (!a.appointment_time || a.status === 'cancelled') return false;
         
-        let aptDate: Date;
-        // Handle postgres spacing
-        const timeStr = a.appointment_time.replace(' ', 'T'); 
-        aptDate = new Date(timeStr);
-        return isSameDay(aptDate, d);
+        try {
+            // parseISO handles the Supabase format correctly with timezones
+            const aptDate = parseISO(a.appointment_time);
+            return format(aptDate, 'yyyy-MM-dd') === format(d, 'yyyy-MM-dd');
+        } catch (e) {
+            console.error("Date parse error", e);
+            return false;
+        }
     });
 
     const handlePrev = () => {
@@ -38,13 +41,13 @@ export function CalendarView() {
 
     if (loading || !settings) return <div style={{ padding: '48px', textAlign: 'center', color: 'var(--muted)' }}>Loading schedule...</div>;
 
-    const days = view === 'week' 
+    const days = view === 'week'
         ? eachDayOfInterval({ start: startOfWeek(date), end: endOfWeek(date) })
         : [date];
 
     const timeSlots: string[] = [];
     const slotDuration = 60;
-    for (let i = 8 * 60; i < 20 * 60; i += slotDuration) {
+    for (let i = 0; i < 24 * 60; i += slotDuration) {
         const h = Math.floor(i / 60);
         const m = i % 60;
         timeSlots.push(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`);
@@ -55,9 +58,9 @@ export function CalendarView() {
             <header style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <div>
                     <h1 style={{ fontSize: '28px', fontWeight: '800', letterSpacing: '-0.02em' }}>Schedule Calendar</h1>
-                    <p style={{ color: 'var(--muted)', marginTop: '4px' }}>Manage clinic appointments and availability.</p>
+                    <p style={{ color: 'var(--muted)', marginTop: '4px' }}>Manage clinic sessions and availability.</p>
                 </div>
-                
+
                 <div style={{ display: 'flex', gap: '12px' }}>
                     <div className="card" style={{ padding: '4px', display: 'flex', gap: '4px', backgroundColor: 'var(--background)' }}>
                         <ViewBtn active={view === 'day'} onClick={() => setView('day')} icon={<List size={16} />} label="Day" />
@@ -71,9 +74,9 @@ export function CalendarView() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                         <h2 style={{ fontSize: '20px', fontWeight: '800' }}>
-                            {view === 'month' ? format(date, 'MMMM yyyy') : 
-                             view === 'week' ? `${format(startOfWeek(date), 'MMM d')} - ${format(endOfWeek(date), 'MMM d, yyyy')}` :
-                             format(date, 'MMMM d, yyyy')}
+                            {view === 'month' ? format(date, 'MMMM yyyy') :
+                                view === 'week' ? `${format(startOfWeek(date), 'MMM d')} - ${format(endOfWeek(date), 'MMM d, yyyy')}` :
+                                    format(date, 'MMMM d, yyyy')}
                         </h2>
                         <button onClick={handleToday} className="btn" style={{ fontSize: '12px', fontWeight: '800', color: 'var(--primary)', backgroundColor: 'var(--primary-light)', padding: '4px 12px', borderRadius: '12px', border: 'none' }}>Today</button>
                     </div>
@@ -85,8 +88,8 @@ export function CalendarView() {
 
                 {view === 'month' ? (
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Calendar 
-                            onChange={(d: any) => setDate(d as Date)} 
+                        <Calendar
+                            onChange={(d: any) => setDate(d as Date)}
                             value={date}
                             className="font-sans"
                             tileContent={({ date: d, view: v }: { date: Date, view: string }) => {
@@ -110,46 +113,46 @@ export function CalendarView() {
                         </div>
 
                         {/* Days Grid */}
-                        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${days.length}, 1fr)`, backgroundColor: 'var(--card-bg)' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${days.length}, 1fr)`, backgroundColor: 'var(--card)' }}>
                             {days.map(d => {
-                                const dayName = format(d, 'EEEE').toLowerCase();
+                                const dayName = format(d, 'eeee').toLowerCase();
                                 const isWorkingDay = settings.business_hours?.[dayName]?.enabled;
                                 const apts = appointmentsOnDate(d);
 
                                 return (
                                     <div key={d.toString()} style={{ borderRight: '1px solid var(--border-light)', position: 'relative' }}>
-                                        <div style={{ 
-                                            height: '50px', padding: '12px', textAlign: 'center', 
+                                        <div style={{
+                                            height: '50px', padding: '12px', textAlign: 'center',
                                             borderBottom: '1px solid var(--border)',
                                             backgroundColor: isToday(d) ? 'var(--primary-light)' : 'transparent',
                                             color: isToday(d) ? 'var(--primary)' : 'inherit'
                                         }}>
                                             <div style={{ fontSize: '11px', fontWeight: '700', opacity: 0.6 }}>{format(d, 'EEE').toUpperCase()}</div>
                                             <div style={{ fontSize: '16px', fontWeight: '800' }}>{format(d, 'd')}</div>
+                                            {apts.length > 0 && <div style={{ fontSize: '10px', color: 'var(--primary)', fontWeight: '800' }}>{apts.length} apts</div>}
                                         </div>
 
-                                        <div style={{ position: 'relative', height: `${timeSlots.length * 60}px`, backgroundColor: isWorkingDay ? 'transparent' : 'var(--background-alt)', opacity: isWorkingDay ? 1 : 0.4 }}>
+                                        <div style={{ position: 'relative', height: `${timeSlots.length * 60}px`, backgroundColor: isWorkingDay ? 'transparent' : 'var(--input)', opacity: isWorkingDay ? 1 : 0.4 }}>
                                             {/* Time segments */}
                                             {timeSlots.map((_, i) => (
-                                                <div key={i} style={{ height: '60px', borderBottom: '1px solid var(--border-light)' }} />
+                                                <div key={i} style={{ height: '60px', borderBottom: '1px solid var(--border)' }} />
                                             ))}
 
                                             {/* Appointments */}
                                             {apts.map(apt => {
-                                                const aptTimeStr = apt.appointment_time.replace(' ', 'T');
-                                                const aptTime = new Date(aptTimeStr);
+                                                const aptTime = parseISO(apt.appointment_time);
                                                 const aptTypes = settings.appointment_types || [];
                                                 const aptType = aptTypes.find(t => t.name === apt.reason_for_visit) || aptTypes[0] || { color: '#3b82f6', duration: 30, name: 'Other' };
                                                 const startHour = aptTime.getHours();
                                                 const startMin = aptTime.getMinutes();
                                                 
-                                                // Calculate top position based on 8 AM start (480 mins)
-                                                const totalMins = (startHour * 60 + startMin) - (480);
+                                                // Calculate top position based on 12 AM start (0 mins)
+                                                const totalMins = (startHour * 60 + startMin);
                                                 const top = (totalMins / 60) * 60;
                                                 const height = ((aptType.duration || 30) / 60) * 60;
 
                                                 return (
-                                                    <div 
+                                                    <div
                                                         key={apt.id}
                                                         style={{
                                                             position: 'absolute',
@@ -193,7 +196,7 @@ export function CalendarView() {
 
 function ViewBtn({ active, onClick, icon, label }: { active: boolean, onClick: () => void, icon: any, label: string }) {
     return (
-        <button 
+        <button
             onClick={onClick}
             style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
