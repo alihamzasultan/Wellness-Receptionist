@@ -37,7 +37,6 @@ export function Settings() {
                 <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', padding: '0 8px' }}>
                     <TabButton active={activeTab === 'reminders'} onClick={() => setActiveTab('reminders')} icon={<Bell size={16} />} label="Reminders" />
                     <TabButton active={activeTab === 'automation'} onClick={() => setActiveTab('automation')} icon={<Zap size={16} />} label="Automation" />
-                    <TabButton active={activeTab === 'scheduling'} onClick={() => setActiveTab('scheduling')} icon={<Clock size={16} />} label="Scheduling" />
                 </div>
                 <div style={{ padding: '32px' }}>
                     {activeTab === 'reminders' && <RemindersTab settings={settings} onSave={handleSave} isSaving={isSaving} isAdmin={role === 'Admin'} />}
