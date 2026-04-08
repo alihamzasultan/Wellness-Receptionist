@@ -6,14 +6,14 @@ import {
     PieChart, Pie, Cell, LineChart, Line, AreaChart, Area
 } from 'recharts';
 import { Calendar, TrendingUp, PhoneCall, CheckCircle2, Navigation, Clock } from 'lucide-react';
-import { 
-    format, 
-    startOfDay, 
-    startOfWeek, 
-    startOfMonth, 
-    isWithinInterval, 
-    subDays, 
-    subWeeks, 
+import {
+    format,
+    startOfDay,
+    startOfWeek,
+    startOfMonth,
+    isWithinInterval,
+    subDays,
+    subWeeks,
     subMonths,
     eachDayOfInterval,
     eachHourOfInterval,
@@ -33,7 +33,7 @@ export function Analytics() {
     const getChartData = () => {
         const now = new Date();
         let interval: { start: Date, end: Date };
-        
+
         if (timeRange === 'day') {
             interval = { start: startOfDay(now), end: now };
             // Group by hour
@@ -70,13 +70,13 @@ export function Analytics() {
     const totalCalls = callLogs.length;
     const resolvedCalls = callLogs.filter(cl => cl.outcome === 'resolved').length;
     const bookedCalls = callLogs.filter(cl => cl.outcome === 'booked').length;
-    
+
     // Resolution Rate %
     const resolutionRate = totalCalls > 0 ? ((resolvedCalls / totalCalls) * 100).toFixed(1) : '0';
-    
+
     // Booking Rate % (based on calls)
     const bookingRate = totalCalls > 0 ? ((bookedCalls / totalCalls) * 100).toFixed(1) : '0';
-    
+
     // Average Handling Time (parse "M:SSs")
     const getAvgHandlingTime = () => {
         if (totalCalls === 0) return "0:00s";
@@ -135,10 +135,10 @@ export function Analytics() {
             </header>
 
             <div className="stat-grid" style={{ marginBottom: '32px' }}>
-                <AnalyticCard label="Total AI Calls" value={totalCalls.toString()} delta="+12%" icon={<PhoneCall size={20} />} />
-                <AnalyticCard label="Booking Rate" value={`${bookingRate}%`} delta="+4.2%" icon={<TrendingUp size={20} />} />
-                <AnalyticCard label="Resolution Rate" value={`${resolutionRate}%`} delta="+2.5%" icon={<CheckCircle2 size={20} />} />
-                <AnalyticCard label="Avg. Handling Time" value={avgHandlingTime} delta="-12s" icon={<Clock size={20} />} />
+                <AnalyticCard label="Total AI Calls" value={totalCalls.toString()} icon={<PhoneCall size={20} />} />
+                <AnalyticCard label="Booking Rate" value={`${bookingRate}%`} icon={<TrendingUp size={20} />} />
+                <AnalyticCard label="Resolution Rate" value={`${resolutionRate}%`} icon={<CheckCircle2 size={20} />} />
+                <AnalyticCard label="Avg. Handling Time" value={avgHandlingTime} icon={<Clock size={20} />} />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
@@ -199,8 +199,7 @@ export function Analytics() {
     );
 }
 
-function AnalyticCard({ label, value, delta, icon }: { label: string, value: string, delta: string, icon: React.ReactNode }) {
-    const isNegative = delta.startsWith('-');
+function AnalyticCard({ label, value, icon }: { label: string, value: string, icon: React.ReactNode }) {
     return (
         <div className="card" style={{ padding: '24px', display: 'flex', gap: '16px', alignItems: 'center' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -208,12 +207,7 @@ function AnalyticCard({ label, value, delta, icon }: { label: string, value: str
             </div>
             <div>
                 <p style={{ fontSize: '13px', fontWeight: '700', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginTop: '4px' }}>
-                    <h2 style={{ fontSize: '28px', fontWeight: '800', letterSpacing: '-0.02em' }}>{value}</h2>
-                    <span style={{ fontSize: '13px', fontWeight: '700', color: isNegative ? '#ef4444' : 'var(--status-completed)' }}>
-                        {delta}
-                    </span>
-                </div>
+                <h2 style={{ fontSize: '28px', fontWeight: '800', letterSpacing: '-0.02em', marginTop: '4px' }}>{value}</h2>
             </div>
         </div>
     );
