@@ -37,7 +37,6 @@ export function Settings() {
                 <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', padding: '0 8px' }}>
                     <TabButton active={activeTab === 'reminders'} onClick={() => setActiveTab('reminders')} icon={<Bell size={16} />} label="Reminders" />
                     <TabButton active={activeTab === 'automation'} onClick={() => setActiveTab('automation')} icon={<Zap size={16} />} label="Automation" />
-                    <TabButton active={activeTab === 'operations'} onClick={() => setActiveTab('operations')} icon={<Calendar size={16} />} label="Clinic Operations" />
                     <TabButton active={activeTab === 'scheduling'} onClick={() => setActiveTab('scheduling')} icon={<Clock size={16} />} label="Scheduling" />
                 </div>
                 <div style={{ padding: '32px' }}>
@@ -237,51 +236,6 @@ function OperationsTab({ settings, onSave, isSaving, isAdmin }: { settings: Clin
                 </select>
             </SettingRow>
 
-            <SettingRow title="Holiday Closures" description="Specific global dates the clinic completely halts schedules." isLast vertical>
-                <div style={{ padding: '16px', backgroundColor: 'var(--background)', borderRadius: '12px', border: '1px solid var(--border)', width: '100%' }}>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                        {localSettings.holidays.length === 0 ? (
-                            <p style={{ color: 'var(--muted)', fontSize: '13px', fontStyle: 'italic', padding: '8px 0' }}>No holidays configured.</p>
-                        ) : (
-                            localSettings.holidays.map(date => (
-                                <div key={date} style={{
-                                    display: 'flex', alignItems: 'center', gap: '8px',
-                                    padding: '6px 12px', backgroundColor: 'var(--card)',
-                                    borderRadius: '8px', border: '1px solid var(--border)',
-                                    fontSize: '13px', fontWeight: '600'
-                                }}>
-                                    <Calendar size={14} style={{ color: 'var(--primary)' }} />
-                                    {new Date(date + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                    {isAdmin && (
-                                        <button
-                                            onClick={() => setLocalSettings({ ...localSettings, holidays: localSettings.holidays.filter((d: string) => d !== date) })}
-                                            style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '2px' }}
-                                        >
-                                            <X size={14} />
-                                        </button>
-                                    )}
-                                </div>
-                            ))
-                        )}
-                        {isAdmin && (
-                            <button
-                                className="btn"
-                                style={{ padding: '6px 16px', fontSize: '12px', backgroundColor: 'transparent', borderStyle: 'dashed' }}
-                                onClick={() => {
-                                    const dateInput = prompt('Enter holiday date (YYYY-MM-DD):');
-                                    if (dateInput && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
-                                        if (!localSettings.holidays.includes(dateInput)) {
-                                            setLocalSettings({ ...localSettings, holidays: [...localSettings.holidays, dateInput].sort() });
-                                        }
-                                    }
-                                }}
-                            >
-                                <Plus size={14} /> Add Holiday
-                            </button>
-                        )}
-                    </div>
-                </div>
-            </SettingRow>
 
             <FooterSaveActions onSave={onSave} isSaving={isSaving} isAdmin={isAdmin} localSettings={localSettings} />
         </div>
@@ -301,79 +255,79 @@ function SchedulingTab({ settings, onSave, isSaving, isAdmin }: { settings: Clin
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <SettingRow title="Global Slot Duration" description="The foundational block of time interval your clinic schedules operate on.">
-                    <select className="search-input" value={localSettings.slot_duration} disabled={!isAdmin} onChange={(e) => setLocalSettings({ ...localSettings, slot_duration: parseInt(e.target.value) })}>
-                        <option value={15}>15 Minutes</option>
-                        <option value={30}>30 Minutes</option>
-                        <option value={45}>45 Minutes</option>
-                        <option value={60}>60 Minutes</option>
-                    </select>
-                </SettingRow>
+                <select className="search-input" value={localSettings.slot_duration} disabled={!isAdmin} onChange={(e) => setLocalSettings({ ...localSettings, slot_duration: parseInt(e.target.value) })}>
+                    <option value={15}>15 Minutes</option>
+                    <option value={30}>30 Minutes</option>
+                    <option value={45}>45 Minutes</option>
+                    <option value={60}>60 Minutes</option>
+                </select>
+            </SettingRow>
             <SettingRow title="Business Hours Matrix" description="Standard active working hours for the clinic throughout the week." isLast vertical>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px', width: '100%' }}>
-                        {Object.entries(localSettings.business_hours).map(([day, hours]: [string, any]) => (
-                            <div key={day} style={{ padding: '16px', backgroundColor: 'var(--background)', borderRadius: '12px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '12px', opacity: hours.enabled ? 1 : 0.6 }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ fontWeight: '700', textTransform: 'capitalize', fontSize: '13px' }}>{day}</span>
-                                    <ToggleSwitch checked={hours.enabled} disabled={!isAdmin} onChange={(c) => {
-                                        const newHours = { ...localSettings.business_hours, [day]: { ...hours, enabled: c } };
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px', width: '100%' }}>
+                    {Object.entries(localSettings.business_hours).map(([day, hours]: [string, any]) => (
+                        <div key={day} style={{ padding: '16px', backgroundColor: 'var(--background)', borderRadius: '12px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '12px', opacity: hours.enabled ? 1 : 0.6 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontWeight: '700', textTransform: 'capitalize', fontSize: '13px' }}>{day}</span>
+                                <ToggleSwitch checked={hours.enabled} disabled={!isAdmin} onChange={(c) => {
+                                    const newHours = { ...localSettings.business_hours, [day]: { ...hours, enabled: c } };
+                                    setLocalSettings({ ...localSettings, business_hours: newHours });
+                                }} />
+                            </div>
+                            {hours.enabled && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <input type="time" className="search-input" style={{ fontSize: '12px', padding: '6px' }} value={hours.open} disabled={!isAdmin} onChange={(e) => {
+                                        const newHours = { ...localSettings.business_hours, [day]: { ...hours, open: e.target.value } };
+                                        setLocalSettings({ ...localSettings, business_hours: newHours });
+                                    }} />
+                                    <span style={{ fontSize: '12px', color: 'var(--muted)' }}>→</span>
+                                    <input type="time" className="search-input" style={{ fontSize: '12px', padding: '6px' }} value={hours.close} disabled={!isAdmin} onChange={(e) => {
+                                        const newHours = { ...localSettings.business_hours, [day]: { ...hours, close: e.target.value } };
                                         setLocalSettings({ ...localSettings, business_hours: newHours });
                                     }} />
                                 </div>
-                                {hours.enabled && (
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <input type="time" className="search-input" style={{ fontSize: '12px', padding: '6px' }} value={hours.open} disabled={!isAdmin} onChange={(e) => {
-                                            const newHours = { ...localSettings.business_hours, [day]: { ...hours, open: e.target.value } };
-                                            setLocalSettings({ ...localSettings, business_hours: newHours });
-                                        }} />
-                                        <span style={{ fontSize: '12px', color: 'var(--muted)' }}>→</span>
-                                        <input type="time" className="search-input" style={{ fontSize: '12px', padding: '6px' }} value={hours.close} disabled={!isAdmin} onChange={(e) => {
-                                            const newHours = { ...localSettings.business_hours, [day]: { ...hours, close: e.target.value } };
-                                            setLocalSettings({ ...localSettings, business_hours: newHours });
-                                        }} />
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </SettingRow>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </SettingRow>
             <SettingRow title="Appointment Library Defaults" description="Manage treatment types, their intrinsic duration, visual colors, and prep/cleanup intervals." isLast vertical>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px', width: '100%' }}>
-                        {isAdmin && <button onClick={handleAddType} className="btn"><Plus size={14} /> Add New Procedure</button>}
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-                        {localSettings.appointment_types.map((type: any) => (
-                            <div key={type.id} style={{ padding: '16px', backgroundColor: 'var(--background)', border: '1px solid var(--border)', borderRadius: '12px', display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
-                                <div style={{ width: '8px', alignSelf: 'stretch', borderRadius: '4px', backgroundColor: type.color }} />
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '20px', flex: 1 }}>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                        <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>NAME</label>
-                                        <input type="text" className="search-input" style={{ fontSize: '13px', height: '32px' }} value={type.name} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { name: e.target.value })} />
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                        <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>DURATION (MIN)</label>
-                                        <input type="number" className="search-input" style={{ fontSize: '13px', height: '32px' }} value={type.duration} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { duration: parseInt(e.target.value) || 0 })} />
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                        <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>COLOR TAG</label>
-                                        <input type="color" style={{ width: '100%', height: '32px', padding: '2px', borderRadius: '6px', border: '1px solid var(--border)', cursor: 'pointer', backgroundColor: 'transparent' }} value={type.color} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { color: e.target.value })} />
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                        <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>BUFFER PRE / POST</label>
-                                        <div style={{ display: 'flex', gap: '8px' }}>
-                                            <input type="number" placeholder="Pre" className="search-input" style={{ fontSize: '12px', height: '32px' }} value={type.pre_buffer} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { pre_buffer: parseInt(e.target.value) || 0 })} />
-                                            <input type="number" placeholder="Post" className="search-input" style={{ fontSize: '12px', height: '32px' }} value={type.post_buffer} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { post_buffer: parseInt(e.target.value) || 0 })} />
-                                        </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px', width: '100%' }}>
+                    {isAdmin && <button onClick={handleAddType} className="btn"><Plus size={14} /> Add New Procedure</button>}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+                    {localSettings.appointment_types.map((type: any) => (
+                        <div key={type.id} style={{ padding: '16px', backgroundColor: 'var(--background)', border: '1px solid var(--border)', borderRadius: '12px', display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+                            <div style={{ width: '8px', alignSelf: 'stretch', borderRadius: '4px', backgroundColor: type.color }} />
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '20px', flex: 1 }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                    <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>NAME</label>
+                                    <input type="text" className="search-input" style={{ fontSize: '13px', height: '32px' }} value={type.name} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { name: e.target.value })} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                    <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>DURATION (MIN)</label>
+                                    <input type="number" className="search-input" style={{ fontSize: '13px', height: '32px' }} value={type.duration} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { duration: parseInt(e.target.value) || 0 })} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                    <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>COLOR TAG</label>
+                                    <input type="color" style={{ width: '100%', height: '32px', padding: '2px', borderRadius: '6px', border: '1px solid var(--border)', cursor: 'pointer', backgroundColor: 'transparent' }} value={type.color} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { color: e.target.value })} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                    <label style={{ fontSize: '10px', fontWeight: '800', color: 'var(--muted)', letterSpacing: '0.05em' }}>BUFFER PRE / POST</label>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <input type="number" placeholder="Pre" className="search-input" style={{ fontSize: '12px', height: '32px' }} value={type.pre_buffer} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { pre_buffer: parseInt(e.target.value) || 0 })} />
+                                        <input type="number" placeholder="Post" className="search-input" style={{ fontSize: '12px', height: '32px' }} value={type.post_buffer} disabled={!isAdmin} onChange={(e) => handleUpdateType(type.id, { post_buffer: parseInt(e.target.value) || 0 })} />
                                     </div>
                                 </div>
-                                {isAdmin && (
-                                    <button onClick={() => handleRemoveType(type.id)} className="btn" style={{ color: '#ef4444', padding: '6px', backgroundColor: 'transparent', alignSelf: 'center' }}>
-                                        <Trash2 size={16} />
-                                    </button>
-                                )}
                             </div>
-                        ))}
-                    </div>
-                </SettingRow>
+                            {isAdmin && (
+                                <button onClick={() => handleRemoveType(type.id)} className="btn" style={{ color: '#ef4444', padding: '6px', backgroundColor: 'transparent', alignSelf: 'center' }}>
+                                    <Trash2 size={16} />
+                                </button>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </SettingRow>
 
             <FooterSaveActions onSave={onSave} isSaving={isSaving} isAdmin={isAdmin} localSettings={localSettings} />
         </div>
