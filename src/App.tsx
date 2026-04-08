@@ -40,7 +40,7 @@ function AppContent() {
         const handleCancelEvent = (e: any) => {
             const apt = e.detail;
             const method = apt.canceled_via_sms ? 'via SMS' : '';
-            const msg = `Patient ${apt.patient_name || 'unknown'} cancelled their appointment ${method}.`.replace('  ', ' ');
+            const msg = `Patient ${apt.patient_name || 'unknown'} cancelled their session ${method}.`.replace('  ', ' ');
             setToast({ message: msg, type: 'danger' });
             addNotification({
                 type: 'CANCELLED',
@@ -51,7 +51,7 @@ function AppContent() {
         };
         const handleConfirmEvent = (e: any) => {
             const apt = e.detail;
-            const msg = `Patient ${apt.patient_name || 'unknown'} confirmed their appointment via SMS.`;
+            const msg = `Patient ${apt.patient_name || 'unknown'} confirmed their session via SMS.`;
             setToast({ message: msg, type: 'success' });
             addNotification({
                 type: 'CONFIRMED',
@@ -62,8 +62,8 @@ function AppContent() {
         };
         const handleFollowUpEvent = (e: any) => {
             const apt = e.detail;
-            const type = apt.follow_up_response_type === 'POSITIVE' ? 'Positive' : 
-                         apt.follow_up_response_type === 'NEGATIVE' ? 'Negative' : 'Response';
+            const type = apt.follow_up_response_type === 'POSITIVE' ? 'Positive' :
+                apt.follow_up_response_type === 'NEGATIVE' ? 'Negative' : 'Response';
             const msg = `${type} follow-up received from ${apt.patient_name || 'patient'}`;
             setToast({ message: msg, type: apt.follow_up_response_type === 'NEGATIVE' ? 'danger' : 'success' });
             addNotification({
@@ -75,7 +75,7 @@ function AppContent() {
         };
         const handleBookedEvent = (e: any) => {
             const apt = e.detail;
-            const msg = `New appointment booked for ${apt.patient_name || 'a patient'}.`;
+            const msg = `New sessions booked for ${apt.patient_name || 'a patient'}.`;
             setToast({ message: msg, type: 'info' });
             addNotification({
                 type: 'NEW_BOOKING',
@@ -88,7 +88,7 @@ function AppContent() {
         window.addEventListener('appointment-cancelled', handleCancelEvent);
         window.addEventListener('appointment-confirmed', handleConfirmEvent);
         window.addEventListener('follow-up-received', handleFollowUpEvent);
-        
+
         const handleNavigate = (e: any) => {
             if (e.detail) setActivePage(e.detail);
         };
@@ -118,7 +118,7 @@ function AppContent() {
                     <div className="sidebar-logo" style={{ width: '48px', height: '48px', animation: 'spin 2s linear infinite' }}>
                         <LayoutDashboard size={24} />
                     </div>
-                    <p style={{ fontWeight: '600' }}>Initializing DentalAI Control Panel...</p>
+                    <p style={{ fontWeight: '600' }}>Initializing Wellness Receptionist Control Panel...</p>
                 </div>
             </div>
         );
@@ -189,7 +189,7 @@ function AppContent() {
                 {toast && (
                     <div style={{
                         position: 'absolute', top: '16px', right: '16px', zIndex: 9999,
-                        background: toast.type === 'danger' ? '#ef4444' : toast.type === 'success' ? '#10b981' : '#3b82f6', 
+                        background: toast.type === 'danger' ? '#ef4444' : toast.type === 'success' ? '#10b981' : '#3b82f6',
                         color: 'white', padding: '16px 24px',
                         borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                         display: 'flex', alignItems: 'center', gap: '12px',
