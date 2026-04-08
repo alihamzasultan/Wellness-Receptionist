@@ -14,11 +14,11 @@ export function CallLogs() {
     const filteredLogs = callLogs.filter(log => {
         const matchesSearch = (log.caller_number?.toLowerCase() || '').includes(searchTerm.toLowerCase());
         const matchesOutcome = outcomeFilter === 'all' || log.outcome === outcomeFilter;
-        
+
         // Filter by location if one is selected
-        const matchesLocation = !selectedLocation || selectedLocation.id === 'all' || 
-                                (log.location && log.location.toLowerCase() === selectedLocation.name.toLowerCase());
-                                
+        const matchesLocation = !selectedLocation || selectedLocation.id === 'all' ||
+            (log.location && log.location.toLowerCase() === selectedLocation.name.toLowerCase());
+
         return matchesSearch && matchesOutcome && matchesLocation;
     });
 
@@ -32,12 +32,12 @@ export function CallLogs() {
                     <p className="page-subtitle">Monitor incoming AI-handled calls and their outcomes in real-time.</p>
                 </div>
                 {selectedLocation && (
-                    <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px', 
-                        padding: '8px 16px', 
-                        backgroundColor: 'var(--primary-light)', 
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '8px 16px',
+                        backgroundColor: 'var(--primary-light)',
                         borderRadius: '20px',
                         border: '1px solid var(--primary)',
                         color: 'var(--primary)',
@@ -46,7 +46,6 @@ export function CallLogs() {
                         marginBottom: '8px'
                     }}>
                         <MapPin size={16} />
-                        <span>Showing: {selectedLocation.name === 'All Locations' ? 'All Cities' : selectedLocation.name}</span>
                     </div>
                 )}
             </header>
