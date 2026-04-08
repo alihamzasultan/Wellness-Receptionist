@@ -52,7 +52,6 @@ export function UnansweredQuestions() {
                             <tr>
                                 <th style={{ width: '140px' }}>Date</th>
                                 <th style={{ width: '150px' }}>Caller</th>
-                                <th style={{ width: '160px' }}>Location</th>
                                 <th>Unanswered Question</th>
                                 <th style={{ width: '130px', textAlign: 'right' }}>Actions</th>
                             </tr>
@@ -70,12 +69,6 @@ export function UnansweredQuestions() {
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                 <Phone size={14} style={{ color: 'var(--muted)' }} />
                                                 <span style={{ fontSize: '13px' }}>{q.caller_number}</span>
-                                            </div>
-                                        </td>
-                                        <td style={{ verticalAlign: 'top' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <MapPin size={14} style={{ color: 'var(--muted)' }} />
-                                                <span style={{ fontSize: '13px' }}>{q.location || '—'}</span>
                                             </div>
                                         </td>
                                         <td>
