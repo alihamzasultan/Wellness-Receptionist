@@ -37,6 +37,7 @@ export function Settings() {
                 <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', padding: '0 8px' }}>
                     <TabButton active={activeTab === 'reminders'} onClick={() => setActiveTab('reminders')} icon={<Bell size={16} />} label="Reminders" />
                     <TabButton active={activeTab === 'automation'} onClick={() => setActiveTab('automation')} icon={<Zap size={16} />} label="Automation" />
+                    {/* <TabButton active={activeTab === 'scheduling'} onClick={() => setActiveTab('scheduling')} icon={<Clock size={16} />} label="Scheduling" /> */}
                 </div>
                 <div style={{ padding: '32px' }}>
                     {activeTab === 'reminders' && <RemindersTab settings={settings} onSave={handleSave} isSaving={isSaving} isAdmin={role === 'Admin'} />}
@@ -173,9 +174,6 @@ function RemindersTab({ settings, onSave, isSaving, isAdmin }: { settings: Clini
                 </select>
             </SettingRow>
 
-            <SettingRow title="Active Channels" description="The communication methods allowed for sending out reminders.">
-                <PillSelector options={['sms', 'email', 'voice']} selected={localSettings.reminder_channels} disabled={!isAdmin} onChange={(selected) => setLocalSettings({ ...localSettings, reminder_channels: selected })} />
-            </SettingRow>
 
             <SettingRow title="Message Template" description="The exact wording sent out to patients as a reminder." isLast vertical>
                 <TokenEditor value={localSettings.reminder_template} onChange={(val) => setLocalSettings({ ...localSettings, reminder_template: val })} placeholder="Enter reminder template..." />
