@@ -29,14 +29,14 @@ export function Dashboard() {
         <div className="animate-up">
             <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
                 <div>
-                    <h1 className="page-title">Appointment Dashboard</h1>
-                    <p className="page-subtitle">Real-time monitoring and management of Wellness Receptionist appointments.</p>
+                    <h1 className="page-title">Dashboard</h1>
+                    <p className="page-subtitle">Real-time monitoring and management of Wellness Receptionist sessions.</p>
                 </div>
             </header>
 
             <div className="stat-grid">
                 <StatCard
-                    label="Total Appointments"
+                    label="Total Sessions"
                     value={stats.total.toString()}
                     icon={<Users size={20} />}
                     trend="+4%"
