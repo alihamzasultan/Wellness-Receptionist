@@ -84,7 +84,7 @@ export function AppointmentTable({ onView, onEdit, onReschedule, onCancel, onDel
                             <th>Contact</th>
                             <th>Reason</th>
                             <th>Schedule</th>
-                            <th>Location</th>
+
                             <th>Status</th>
                             <th>Confirm</th>
                             <th>Reminder</th>
@@ -111,11 +111,6 @@ export function AppointmentTable({ onView, onEdit, onReschedule, onCancel, onDel
                                         <span style={{ fontWeight: '600' }}>{safeFormat(apt.appointment_time, 'MMM dd, yyyy')}</span>
                                         <span style={{ fontSize: '12px', color: 'var(--muted)' }}>{safeFormat(apt.appointment_time, 'hh:mm a')}</span>
                                     </div>
-                                </td>
-                                <td>
-                                    <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: '500' }}>
-                                        {apt.location || 'N/A'}
-                                    </span>
                                 </td>
                                 <td>
                                     <Badge status={apt.status || 'booked'} />
@@ -146,10 +141,10 @@ export function AppointmentTable({ onView, onEdit, onReschedule, onCancel, onDel
                                 </td>
                                 <td>
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                                        <ActionMenu 
-                                            apt={apt} onView={onView} onEdit={onEdit} 
-                                            onReschedule={onReschedule} onCancel={onCancel} 
-                                            onDelete={onDelete} role={role} 
+                                        <ActionMenu
+                                            apt={apt} onView={onView} onEdit={onEdit}
+                                            onReschedule={onReschedule} onCancel={onCancel}
+                                            onDelete={onDelete} role={role}
                                         />
                                     </div>
                                 </td>
@@ -183,7 +178,7 @@ function ActionMenu({ apt, onView, onEdit, onReschedule, onCancel, onDelete, rol
 
     return (
         <div style={{ position: 'relative' }} ref={menuRef}>
-            <button 
+            <button
                 onClick={() => setIsOpen(!isOpen)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', borderRadius: '4px', color: 'var(--muted)' }}
             >
@@ -222,7 +217,7 @@ function ActionMenu({ apt, onView, onEdit, onReschedule, onCancel, onDelete, rol
 
 function ActionMenuItem({ icon, label, onClick, danger }: any) {
     return (
-        <button 
+        <button
             onClick={onClick}
             style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
