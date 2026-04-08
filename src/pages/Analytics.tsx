@@ -143,7 +143,7 @@ export function Analytics() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
                 <div className="card" style={{ padding: '24px' }}>
-                    <h3 style={{ fontSize: '16px', fontWeight: '800', marginBottom: '24px' }}>Call Volume & Appointments</h3>
+                    <h3 style={{ fontSize: '16px', fontWeight: '800', marginBottom: '24px' }}>Call Volume & Sessions</h3>
                     <div style={{ height: '300px', width: '100%' }}>
                         <ResponsiveContainer>
                             <AreaChart data={dynamicChartData}>
