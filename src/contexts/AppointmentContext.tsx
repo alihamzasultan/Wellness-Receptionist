@@ -61,8 +61,8 @@ export function AppointmentProvider({ children }: { children: React.ReactNode })
             if (error) throw error;
 
             let mappedData = (data || []).map(apt => {
-                let s = apt.status || 'booked';
-                if (s.toLowerCase() === 'rescheduled') s = 'booked';
+                let s = (apt.status || 'booked').toLowerCase();
+                if (s === 'rescheduled') s = 'booked';
                 return { ...apt, status: s };
             });
 
@@ -89,8 +89,8 @@ export function AppointmentProvider({ children }: { children: React.ReactNode })
                 },
                 (payload) => {
                     if (payload.eventType === 'INSERT') {
-                        let newStatus = payload.new.status || 'booked';
-                        if (newStatus.toLowerCase() === 'rescheduled') newStatus = 'booked';
+                        let newStatus = (payload.new.status || 'booked').toLowerCase();
+                        if (newStatus === 'rescheduled') newStatus = 'booked';
                         const newApt = { ...payload.new, status: newStatus } as Appointment;
                         
                         window.dispatchEvent(new CustomEvent('appointment-booked', { detail: newApt }));
@@ -99,8 +99,8 @@ export function AppointmentProvider({ children }: { children: React.ReactNode })
                             setAppointments((current) => [...current, newApt]);
                         }
                     } else if (payload.eventType === 'UPDATE') {
-                        let newStatus = payload.new.status || 'booked';
-                        if (newStatus.toLowerCase() === 'rescheduled') newStatus = 'booked';
+                        let newStatus = (payload.new.status || 'booked').toLowerCase();
+                        if (newStatus === 'rescheduled') newStatus = 'booked';
                         const updatedApt = { ...payload.new, status: newStatus } as Appointment;
                         
                         setAppointments((current) => {
