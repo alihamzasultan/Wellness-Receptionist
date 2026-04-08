@@ -205,9 +205,7 @@ function AutomationTab({ settings, onSave, isSaving, isAdmin }: { settings: Clin
                         <PillSelector options={['sms']} selected={localSettings.followup_channels} disabled={!isAdmin} onChange={(selected) => setLocalSettings({ ...localSettings, followup_channels: selected })} />
                     </SettingRow>
 
-                    <SettingRow title="Feedback Template" description="The wording used asking patients for their feedback." isLast vertical>
-                        <TokenEditor value={localSettings.followup_template} onChange={(val) => setLocalSettings({ ...localSettings, followup_template: val })} placeholder="Enter follow-up template..." />
-                    </SettingRow>
+   
                 </div>
             )}
 
