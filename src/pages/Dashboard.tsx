@@ -37,24 +37,23 @@ export function Dashboard() {
             <div className="stat-grid">
                 <StatCard
                     label="Total Sessions"
-                    value={stats.total.toString()}
+                    value={stats.total}
                     icon={<Users size={20} />}
-                    trend="+4%"
                     type="total"
                 />
                 <StatCard
                     label="Booked"
-                    value={stats.booked.toString()}
+                    value={stats.booked}
                     icon={<CalendarCheck size={20} />}
-                    trend="+2%"
                     type="booked"
+                    total={stats.total}
                 />
                 <StatCard
                     label="Cancelled"
-                    value={stats.cancelled.toString()}
+                    value={stats.cancelled}
                     icon={<CalendarX size={20} />}
-                    trend="-1%"
                     type="cancelled"
+                    total={stats.total}
                 />
             </div>
 
@@ -116,7 +115,13 @@ export function Dashboard() {
     );
 }
 
-function StatCard({ label, value, icon, trend, type }: { label: string, value: string, icon: React.ReactNode, trend: string, type: 'total' | 'booked' | 'cancelled' | 'completed' }) {
+function StatCard({ label, value, icon, type, total }: {
+    label: string,
+    value: number,
+    icon: React.ReactNode,
+    type: 'total' | 'booked' | 'cancelled' | 'completed',
+    total?: number
+}) {
     const config = {
         total: { color: 'var(--primary)', bg: 'var(--primary-light)' },
         booked: { color: 'var(--status-booked)', bg: 'var(--status-booked-bg)' },
@@ -125,7 +130,9 @@ function StatCard({ label, value, icon, trend, type }: { label: string, value: s
     };
 
     const { color, bg } = config[type];
-    const isPositive = trend.startsWith('+');
+
+    // Calculate real percentage of total, only when meaningful
+    const pct = (total && total > 0) ? Math.round((value / total) * 100) : null;
 
     return (
         <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -137,13 +144,15 @@ function StatCard({ label, value, icon, trend, type }: { label: string, value: s
                 }}>
                     {icon}
                 </div>
-                <div style={{
-                    padding: '4px 8px', borderRadius: '16px', fontSize: '11px', fontWeight: '700',
-                    backgroundColor: isPositive ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                    color: isPositive ? '#10b981' : '#ef4444'
-                }}>
-                    {trend}
-                </div>
+                {pct !== null && (
+                    <div style={{
+                        padding: '4px 8px', borderRadius: '16px', fontSize: '11px', fontWeight: '700',
+                        backgroundColor: type === 'cancelled' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                        color: type === 'cancelled' ? '#ef4444' : '#10b981'
+                    }}>
+                        {pct}% of total
+                    </div>
+                )}
             </div>
             <div>
                 <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--foreground)', lineHeight: '1.2' }}>{value}</div>
