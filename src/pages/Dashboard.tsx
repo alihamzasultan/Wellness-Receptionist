@@ -29,7 +29,7 @@ export function Dashboard() {
         <div className="animate-up">
             <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
                 <div>
-                    <h1 className="page-title">Dashboard</h1>
+                    <h1 className="page-title">Harmony Wellness London Dashboard</h1>
                     <p className="page-subtitle">Real-time monitoring and management of Wellness Receptionist sessions.</p>
                 </div>
             </header>
