@@ -149,13 +149,6 @@ export function Sidebar({ isOpen, isMobile = false, activePage, setActivePage }:
                             isOpen={isOpen}
                         />
                         <NavItem
-                            icon={<Database size={18} strokeWidth={1.5} />}
-                            label="Available Cases"
-                            active={activePage === 'appointments'}
-                            onClick={() => setActivePage('appointments')}
-                            isOpen={isOpen}
-                        />
-                        <NavItem
                             icon={<Calendar size={18} strokeWidth={1.5} />}
                             label="Calendar"
                             active={activePage === 'calendar'}
