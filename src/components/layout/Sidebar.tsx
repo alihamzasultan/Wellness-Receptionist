@@ -95,11 +95,10 @@ export function Sidebar({ isOpen, isMobile = false, activePage, setActivePage }:
                         </div>
                         {isOpen && (
                             <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                                <div style={{ fontSize: '14px', fontWeight: '800', color: 'var(--foreground)', lineHeight: '1.2', display: 'flex', flexDirection: 'column' }}>
-                                    <span>Harmony</span>
-                                    <span>Wellness</span>
+                                <div style={{ fontSize: '12px', fontWeight: '800', color: 'var(--foreground)', lineHeight: '1.2', display: 'flex', flexDirection: 'column' }}>
+                                    <span>Harmony Wellness</span>
+                                    <span>London</span>
                                 </div>
-                                <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--muted)', textTransform: 'capitalize' }}>{role}</span>
                             </div>
                         )}
                     </button>
