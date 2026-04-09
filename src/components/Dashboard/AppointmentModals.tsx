@@ -21,7 +21,7 @@ export function ViewAppointmentModal({ isOpen, onClose, appointment }: ViewModal
     if (!appointment) return null;
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Appointment Details">
+        <Modal isOpen={isOpen} onClose={onClose} title="Session Details">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '24px', borderBottom: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -41,7 +41,7 @@ export function ViewAppointmentModal({ isOpen, onClose, appointment }: ViewModal
                     <DetailItem icon={<Mail size={18} />} label="Email" value={appointment.email} />
                     <DetailItem
                         icon={<Clock size={18} />}
-                        label="Appointment Time"
+                        label="Session Time"
                         value={safeFormat(appointment.appointment_time, 'EEEE, MMMM dd, yyyy @ hh:mm a')}
                     />
                     <DetailItem icon={<FileText size={18} />} label="Reason for Visit" value={appointment.reason_for_visit} />
@@ -59,27 +59,27 @@ export function ViewAppointmentModal({ isOpen, onClose, appointment }: ViewModal
                     </h5>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         {appointment.confirmation_status && (
-                            <ActivityItem 
-                                icon={<CheckCircle size={14} />} 
-                                color="var(--status-completed)" 
-                                label="Confirmation Status" 
-                                value={appointment.confirmation_status} 
+                            <ActivityItem
+                                icon={<CheckCircle size={14} />}
+                                color="var(--status-completed)"
+                                label="Confirmation Status"
+                                value={appointment.confirmation_status}
                             />
                         )}
                         {appointment.canceled_via_sms && (
-                            <ActivityItem 
-                                icon={<XCircle size={14} />} 
-                                color="#ef4444" 
-                                label="Action" 
-                                value="Cancelled via SMS Response" 
+                            <ActivityItem
+                                icon={<XCircle size={14} />}
+                                color="#ef4444"
+                                label="Action"
+                                value="Cancelled via SMS Response"
                             />
                         )}
                         {(appointment as any).feedback_text && (
-                            <ActivityItem 
-                                icon={<Star size={14} />} 
-                                color="#f59e0b" 
-                                label="Patient Feedback" 
-                                value={(appointment as any).feedback_text} 
+                            <ActivityItem
+                                icon={<Star size={14} />}
+                                color="#f59e0b"
+                                label="Patient Feedback"
+                                value={(appointment as any).feedback_text}
                             />
                         )}
                         {!appointment.confirmation_status && !appointment.canceled_via_sms && !(appointment as any).feedback_text && (
@@ -147,7 +147,7 @@ export function EditAppointmentModal({ isOpen, onClose, appointment, onSave }: E
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Edit Appointment">
+        <Modal isOpen={isOpen} onClose={onClose} title="Edit Session">
             <form onSubmit={handleSubmit}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
                     <InputGroup label="Patient Name" value={formData.patient_name || ''} onChange={(val) => setFormData({ ...formData, patient_name: val })} />
@@ -325,12 +325,12 @@ export function AddAppointmentModal({ isOpen, onClose, onSave }: AddModalProps) 
 
 function ActivityItem({ icon, label, value, color }: { icon: React.ReactNode, label: string, value: string, color?: string }) {
     return (
-        <div style={{ 
-            display: 'flex', alignItems: 'flex-start', gap: '12px', 
+        <div style={{
+            display: 'flex', alignItems: 'flex-start', gap: '12px',
             padding: '12px', backgroundColor: 'var(--background)', borderRadius: '10px',
-            border: '1px solid var(--border)' 
+            border: '1px solid var(--border)'
         }}>
-            <div style={{ 
+            <div style={{
                 marginTop: '2px', color: color || 'var(--primary)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>
