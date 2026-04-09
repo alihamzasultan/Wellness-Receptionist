@@ -179,7 +179,7 @@ export function DeleteConfirmationModal({ isOpen, onClose, onConfirm, patientNam
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Delete Appointment" maxWidth="400px">
+        <Modal isOpen={isOpen} onClose={onClose} title="Delete Session" maxWidth="400px">
             <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
                     <AlertTriangle size={32} />
