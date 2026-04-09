@@ -165,7 +165,7 @@ function RemindersTab({ settings, onSave, isSaving, isAdmin }: { settings: Clini
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <SettingRow title="Reminder Timing" description="How far in advance should we send appointment reminders to patients?">
+            <SettingRow title="Reminder Timing" description="How far in advance should we send sessions reminders to patients?">
                 <select className="search-input" value={localSettings.reminder_timing} disabled={!isAdmin} onChange={(e) => setLocalSettings({ ...localSettings, reminder_timing: e.target.value })}>
                     <option value="12h">12 hours before</option>
                     <option value="24h">24 hours before</option>
@@ -186,13 +186,13 @@ function AutomationTab({ settings, onSave, isSaving, isAdmin }: { settings: Clin
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <SettingRow title="Enable Follow-ups" description="Automatically send messages after appointments to gather feedback.">
+            <SettingRow title="Enable Follow-ups" description="Automatically send messages after sessions to gather feedback.">
                 <ToggleSwitch checked={localSettings.followup_enabled} disabled={!isAdmin} onChange={(c) => setLocalSettings({ ...localSettings, followup_enabled: c })} />
             </SettingRow>
 
             {localSettings.followup_enabled && (
                 <div style={{ animation: 'fadeIn 0.3s' }}>
-                    <SettingRow title="Follow-up Timing" description="How long after the appointment should the system reach out?">
+                    <SettingRow title="Follow-up Timing" description="How long after the session should the system reach out?">
                         <select className="search-input" value={localSettings.followup_timing} disabled={!isAdmin} onChange={(e) => setLocalSettings({ ...localSettings, followup_timing: e.target.value })}>
                             <option value="1h">1 hour after</option>
                             <option value="4h">4 hours after</option>
