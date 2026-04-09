@@ -52,7 +52,7 @@ export function AppointmentTable({ onView, onEdit, onReschedule, onCancel, onDel
                     <Search size={16} strokeWidth={2.5} style={{ position: 'absolute', left: '12px', color: 'var(--muted)' }} />
                     <input
                         type="text"
-                        placeholder="Search patient, email, phone..."
+                        placeholder="Search client, email, phone..."
                         className="search-input"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -80,7 +80,7 @@ export function AppointmentTable({ onView, onEdit, onReschedule, onCancel, onDel
                 <table className="data-table">
                     <thead>
                         <tr>
-                            <th>Patient</th>
+                            <th>Client</th>
                             <th>Contact</th>
                             <th>Reason</th>
                             <th>Schedule</th>
