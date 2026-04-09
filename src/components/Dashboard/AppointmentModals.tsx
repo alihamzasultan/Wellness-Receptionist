@@ -8,7 +8,7 @@ import { User, Phone, Mail, FileText, Clock, AlertTriangle, Bell, MessageSquare,
 function safeFormat(dateStr: string | undefined | null, fmt: string, fallback = 'N/A'): string {
     if (!dateStr) return fallback;
     const d = new Date(dateStr);
-    return isValid(d) ? format(d, fmt) : fallback;s
+    return isValid(d) ? format(d, fmt) : fallback;
 }
 
 interface ViewModalProps {
