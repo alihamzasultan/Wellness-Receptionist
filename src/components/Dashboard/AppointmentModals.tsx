@@ -150,7 +150,7 @@ export function EditAppointmentModal({ isOpen, onClose, appointment, onSave }: E
         <Modal isOpen={isOpen} onClose={onClose} title="Edit Session">
             <form onSubmit={handleSubmit}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-                    <InputGroup label="Patient Name" value={formData.patient_name || ''} onChange={(val) => setFormData({ ...formData, patient_name: val })} />
+                    <InputGroup label="Client Name" value={formData.patient_name || ''} onChange={(val) => setFormData({ ...formData, patient_name: val })} />
                     <InputGroup label="Status" value={formData.status || ''} type="select" options={['booked', 'cancelled', 'rescheduled', 'completed']} onChange={(val) => setFormData({ ...formData, status: val })} />
                     <InputGroup label="Phone" value={formData.phone || ''} onChange={(val) => setFormData({ ...formData, phone: val })} />
                     <InputGroup label="Email" value={formData.email || ''} type="email" onChange={(val) => setFormData({ ...formData, email: val })} />
