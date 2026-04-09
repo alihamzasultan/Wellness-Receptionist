@@ -6,7 +6,7 @@ import { TokenEditor } from '../components/shared/TokenEditor';
 const TEMPLATE_CATEGORIES = [
     {
         id: 'appointment_mgmt',
-        name: 'Appointment Management',
+        name: 'Session Management',
         icon: <Calendar size={18} />,
         templates: ['appointment_confirmation', 'appointment_rescheduled', 'appointment_cancelled']
     },
@@ -53,12 +53,12 @@ export function SMSTemplates() {
 
     const handleSave = async () => {
         if (!selectedTemplateId) return;
-        
+
         setIsSaving(true);
         setSaveStatus(null);
-        
+
         const { error } = await updateTemplate(selectedTemplateId, smsText);
-        
+
         if (error) {
             setSaveStatus({ type: 'error', message: `SMS template update failed: ${error}` });
         } else {
@@ -112,8 +112,8 @@ export function SMSTemplates() {
         <div className="animate-up">
             <header className="page-header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ 
-                        width: '40px', height: '40px', borderRadius: '10px', 
+                    <div style={{
+                        width: '40px', height: '40px', borderRadius: '10px',
                         backgroundColor: 'var(--primary-light)', color: 'var(--primary)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}>
@@ -131,12 +131,12 @@ export function SMSTemplates() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {TEMPLATE_CATEGORIES.map(category => (
                         <div key={category.id} className="card" style={{ padding: '12px', background: 'var(--card-bg)' }}>
-                            <div style={{ 
-                                display: 'flex', alignItems: 'center', gap: '8px', 
-                                padding: '8px', color: 'var(--muted)', 
-                                fontSize: '11px', fontWeight: '800', 
+                            <div style={{
+                                display: 'flex', alignItems: 'center', gap: '8px',
+                                padding: '8px', color: 'var(--muted)',
+                                fontSize: '11px', fontWeight: '800',
                                 textTransform: 'uppercase', letterSpacing: '0.05em',
-                                marginBottom: '4px' 
+                                marginBottom: '4px'
                             }}>
                                 {category.icon}
                                 {category.name}
@@ -180,14 +180,14 @@ export function SMSTemplates() {
                         <div>
                             <h2 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '4px' }}>{selectedTemplate?.template_name || 'Select a template'}</h2>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ 
-                                    padding: '2px 8px', borderRadius: '4px', 
+                                {/* <span style={{
+                                    padding: '2px 8px', borderRadius: '4px',
                                     backgroundColor: 'var(--primary-light)', color: 'var(--primary)',
                                     fontSize: '10px', fontWeight: '800', textTransform: 'uppercase'
                                 }}>
                                     Active Template
-                                </span>
-                                <p style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: '600' }}>ID: {selectedTemplateId}</p>
+                                </span> */}
+                                {/* <p style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: '600' }}>ID: {selectedTemplateId}</p> */}
                             </div>
                         </div>
                     </div>
@@ -197,10 +197,10 @@ export function SMSTemplates() {
                             <label style={{ display: 'block', fontSize: '12px', fontWeight: '800', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                 SMS Template
                             </label>
-                            <div style={{ 
-                                display: 'flex', alignItems: 'center', gap: '4px', 
-                                fontSize: '12px', fontWeight: '700', 
-                                color: smsText.length > 160 ? '#ef4444' : 'var(--muted)' 
+                            <div style={{
+                                display: 'flex', alignItems: 'center', gap: '4px',
+                                fontSize: '12px', fontWeight: '700',
+                                color: smsText.length > 160 ? '#ef4444' : 'var(--muted)'
                             }}>
                                 <Type size={14} />
                                 {smsText.length} / 160
@@ -214,7 +214,7 @@ export function SMSTemplates() {
                     </div>
 
                     {saveStatus && (
-                        <div className="animate-in" style={{ 
+                        <div className="animate-in" style={{
                             padding: '14px 18px', borderRadius: '10px', marginBottom: '20px',
                             backgroundColor: saveStatus.type === 'success' ? 'var(--status-completed-bg)' : 'rgba(239, 68, 68, 0.1)',
                             color: saveStatus.type === 'success' ? 'var(--status-completed)' : '#ef4444',
@@ -227,10 +227,10 @@ export function SMSTemplates() {
                     )}
 
                     <div style={{ display: 'flex', gap: '12px' }}>
-                        <button 
-                            className="btn btn-primary" 
-                            style={{ flex: 1, height: '48px', fontSize: '15px', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }} 
-                            onClick={handleSave} 
+                        <button
+                            className="btn btn-primary"
+                            style={{ flex: 1, height: '48px', fontSize: '15px', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
+                            onClick={handleSave}
                             disabled={isSaving}
                         >
                             {isSaving ? (
@@ -247,10 +247,10 @@ export function SMSTemplates() {
                                 </>
                             )}
                         </button>
-                        <button 
-                            className="btn" 
-                            style={{ padding: '0 24px', height: '48px', border: '1px solid var(--border)', background: 'transparent', display: 'flex', alignItems: 'center', gap: '8px' }} 
-                            onClick={handleReset} 
+                        <button
+                            className="btn"
+                            style={{ padding: '0 24px', height: '48px', border: '1px solid var(--border)', background: 'transparent', display: 'flex', alignItems: 'center', gap: '8px' }}
+                            onClick={handleReset}
                             disabled={isSaving}
                         >
                             <RotateCcw size={18} />
@@ -266,7 +266,7 @@ export function SMSTemplates() {
                             <MessageCircle size={18} style={{ color: 'var(--primary)' }} />
                             <h3 style={{ fontSize: '16px', fontWeight: '800' }}>Live Preview</h3>
                         </div>
-                        <div style={{ 
+                        <div style={{
                             position: 'relative', padding: '20px', backgroundColor: 'var(--input)',
                             borderRadius: '18px', border: '1px solid var(--border)', minHeight: '140px',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
@@ -274,9 +274,9 @@ export function SMSTemplates() {
                             <div style={{ fontSize: '14px', color: 'var(--foreground)', lineHeight: '1.5', whiteSpace: 'pre-wrap' }}>
                                 {renderPreview(smsText)}
                             </div>
-                            <div style={{ 
-                                position: 'absolute', bottom: '-8px', left: '24px', 
-                                width: '16px', height: '16px', backgroundColor: 'var(--input)', 
+                            <div style={{
+                                position: 'absolute', bottom: '-8px', left: '24px',
+                                width: '16px', height: '16px', backgroundColor: 'var(--input)',
                                 borderLeft: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
                                 transform: 'rotate(45deg)'
                             }}></div>
