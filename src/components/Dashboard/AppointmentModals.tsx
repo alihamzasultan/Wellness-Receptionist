@@ -186,7 +186,7 @@ export function DeleteConfirmationModal({ isOpen, onClose, onConfirm, patientNam
                 </div>
                 <div>
                     <h4 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '8px' }}>Confirm Deletion</h4>
-                    <p style={{ color: 'var(--muted)', fontSize: '14px' }}>Are you sure you want to delete the appointment for <strong>{patientName}</strong>? This action cannot be undone.</p>
+                    <p style={{ color: 'var(--muted)', fontSize: '14px' }}>Are you sure you want to delete the Session for <strong>{patientName}</strong>? This action cannot be undone.</p>
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
                     <button onClick={onClose} className="btn" style={{ flex: 1, padding: '12px', border: '1px solid var(--border)', backgroundColor: 'transparent' }}>Cancel</button>
@@ -217,7 +217,7 @@ export function CancelConfirmationModal({ isOpen, onClose, onConfirm, patientNam
                 </div>
                 <div>
                     <h4 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '8px' }}>Confirm Cancellation</h4>
-                    <p style={{ color: 'var(--muted)', fontSize: '14px' }}>Are you sure you want to cancel the appointment for <strong>{patientName}</strong>?</p>
+                    <p style={{ color: 'var(--muted)', fontSize: '14px' }}>Are you sure you want to cancel the Session for <strong>{patientName}</strong>?</p>
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
                     <button onClick={onClose} className="btn" style={{ flex: 1, padding: '12px', border: '1px solid var(--border)', backgroundColor: 'transparent' }}>Keep it</button>
@@ -256,7 +256,7 @@ export function RescheduleModal({ isOpen, onClose, appointment, onSave }: { isOp
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Reschedule Appointment" maxWidth="400px">
+        <Modal isOpen={isOpen} onClose={onClose} title="Reschedule Session" maxWidth="400px">
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <InputGroup label="Select New Date & Time" value={newTime} type="datetime-local" onChange={(val) => setNewTime(val)} />
                 <div style={{ display: 'flex', gap: '12px' }}>
@@ -306,7 +306,7 @@ export function AddAppointmentModal({ isOpen, onClose, onSave }: AddModalProps) 
             <form onSubmit={handleSubmit}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
                     <InputGroup label="Patient Name" value={formData.patient_name || ''} onChange={(val) => setFormData({ ...formData, patient_name: val })} />
-                    <InputGroup label="Appointment Time" value={formData.appointment_time || ''} type="datetime-local" onChange={(val) => setFormData({ ...formData, appointment_time: val })} />
+                    <InputGroup label="Session Time" value={formData.appointment_time || ''} type="datetime-local" onChange={(val) => setFormData({ ...formData, appointment_time: val })} />
                     <InputGroup label="Phone" value={formData.phone || ''} onChange={(val) => setFormData({ ...formData, phone: val })} />
                     <InputGroup label="Email" value={formData.email || ''} type="email" onChange={(val) => setFormData({ ...formData, email: val })} />
                 </div>
