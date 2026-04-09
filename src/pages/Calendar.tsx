@@ -14,7 +14,7 @@ export function CalendarView() {
 
     const appointmentsOnDate = (d: Date) => appointments.filter(a => {
         if (!a.appointment_time || a.status === 'cancelled') return false;
-        
+
         try {
             // parseISO handles the Supabase format correctly with timezones
             const aptDate = parseISO(a.appointment_time);
@@ -101,91 +101,93 @@ export function CalendarView() {
                         />
                     </div>
                 ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr', gap: '0', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr', gap: '0', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', height: '600px' }}>
                         {/* Time Gutter */}
-                        <div style={{ backgroundColor: 'var(--background)', borderRight: '1px solid var(--border)' }}>
-                            <div style={{ height: '50px', borderBottom: '1px solid var(--border)' }} />
+                        <div className="no-scrollbar" style={{ backgroundColor: 'var(--background)', borderRight: '1px solid var(--border)', overflowY: 'auto' }}>
+                            <div style={{ height: '50px', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, backgroundColor: 'var(--background)', zIndex: 5 }} />
                             {timeSlots.map(time => (
-                                <div key={time} style={{ height: '60px', padding: '8px', fontSize: '11px', fontWeight: '700', color: 'var(--muted)', textAlign: 'right', borderBottom: '1px solid var(--border-light)' }}>
+                                <div key={time} style={{ height: '60px', padding: '8px', fontSize: '11px', fontWeight: '700', color: 'var(--muted)', textAlign: 'right', borderBottom: '1px solid var(--border)' }}>
                                     {time}
                                 </div>
                             ))}
                         </div>
 
-                        {/* Days Grid */}
-                        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${days.length}, 1fr)`, backgroundColor: 'var(--card)' }}>
-                            {days.map(d => {
-                                const dayName = format(d, 'eeee').toLowerCase();
-                                const isWorkingDay = settings.business_hours?.[dayName]?.enabled;
-                                const apts = appointmentsOnDate(d);
+                        {/* Days Grid Wrapper for scrolling */}
+                        <div style={{ overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${days.length}, 1fr)`, backgroundColor: 'var(--card)', flex: 1 }}>
+                                {days.map(d => {
+                                    const dayName = format(d, 'eeee').toLowerCase();
+                                    const isWorkingDay = settings.business_hours?.[dayName]?.enabled;
+                                    const apts = appointmentsOnDate(d);
 
-                                return (
-                                    <div key={d.toString()} style={{ borderRight: '1px solid var(--border-light)', position: 'relative' }}>
-                                        <div style={{
-                                            height: '50px', padding: '12px', textAlign: 'center',
-                                            borderBottom: '1px solid var(--border)',
-                                            backgroundColor: isToday(d) ? 'var(--primary-light)' : 'transparent',
-                                            color: isToday(d) ? 'var(--primary)' : 'inherit'
-                                        }}>
-                                            <div style={{ fontSize: '11px', fontWeight: '700', opacity: 0.6 }}>{format(d, 'EEE').toUpperCase()}</div>
-                                            <div style={{ fontSize: '16px', fontWeight: '800' }}>{format(d, 'd')}</div>
-                                            {apts.length > 0 && <div style={{ fontSize: '10px', color: 'var(--primary)', fontWeight: '800' }}>{apts.length} apts</div>}
+                                    return (
+                                        <div key={d.toString()} style={{ borderRight: '1px solid var(--border-light)', position: 'relative' }}>
+                                            <div style={{
+                                                height: '50px', padding: '12px', textAlign: 'center',
+                                                borderBottom: '1px solid var(--border)',
+                                                backgroundColor: isToday(d) ? 'var(--primary-light)' : 'var(--background)',
+                                                color: isToday(d) ? 'var(--primary)' : 'inherit',
+                                                position: 'sticky', top: 0, zIndex: 5
+                                            }}>
+                                                <div style={{ fontSize: '11px', fontWeight: '700', opacity: 0.6 }}>{format(d, 'EEE').toUpperCase()}</div>
+                                                <div style={{ fontSize: '16px', fontWeight: '800' }}>{format(d, 'd')}</div>
+                                                {apts.length > 0 && <div style={{ fontSize: '10px', color: 'var(--primary)', fontWeight: '800' }}>{apts.length}Session</div>}
+                                            </div>
+
+                                            <div style={{ position: 'relative', height: `${timeSlots.length * 60}px`, backgroundColor: isWorkingDay ? 'transparent' : 'var(--input)', opacity: isWorkingDay ? 1 : 0.4 }}>
+                                                {/* Time segments */}
+                                                {timeSlots.map((_, i) => (
+                                                    <div key={i} style={{ height: '60px', borderBottom: '1px solid var(--border)' }} />
+                                                ))}
+
+                                                {/* Appointments */}
+                                                {apts.map(apt => {
+                                                    const aptTime = parseISO(apt.appointment_time);
+                                                    const aptTypes = settings.appointment_types || [];
+                                                    const aptType = aptTypes.find(t => t.name === apt.reason_for_visit) || aptTypes[0] || { color: '#3b82f6', duration: 30, name: 'Other' };
+                                                    const startHour = aptTime.getHours();
+                                                    const startMin = aptTime.getMinutes();
+
+                                                    // Calculate top position based on 12 AM start (0 mins)
+                                                    const totalMins = (startHour * 60 + startMin);
+                                                    const top = (totalMins / 60) * 60;
+                                                    const height = ((aptType.duration || 30) / 60) * 60;
+
+                                                    return (
+                                                        <div
+                                                            key={apt.id}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: `${top}px`,
+                                                                left: '4px',
+                                                                right: '4px',
+                                                                height: `${height}px`,
+                                                                backgroundColor: aptType.color + '20',
+                                                                borderLeft: `4px solid ${aptType.color}`,
+                                                                borderRadius: '4px',
+                                                                padding: '8px',
+                                                                zIndex: 10,
+                                                                overflow: 'hidden',
+                                                                boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                                                                cursor: 'pointer'
+                                                            }}
+                                                        >
+                                                            <div style={{ fontWeight: '800', color: aptType.color }}>{format(aptTime, 'h:mm a')}</div>
+                                                            <div style={{ fontWeight: '700', marginTop: '2px' }}>{apt.patient_name}</div>
+                                                            <div style={{ fontSize: '10px', opacity: 0.7 }}>{aptType.name}</div>
+                                                            {apt.confirmation_status === 'CONFIRMED' && (
+                                                                <div style={{ position: 'absolute', top: '8px', right: '8px' }}>
+                                                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--status-completed)' }} />
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-
-                                        <div style={{ position: 'relative', height: `${timeSlots.length * 60}px`, backgroundColor: isWorkingDay ? 'transparent' : 'var(--input)', opacity: isWorkingDay ? 1 : 0.4 }}>
-                                            {/* Time segments */}
-                                            {timeSlots.map((_, i) => (
-                                                <div key={i} style={{ height: '60px', borderBottom: '1px solid var(--border)' }} />
-                                            ))}
-
-                                            {/* Appointments */}
-                                            {apts.map(apt => {
-                                                const aptTime = parseISO(apt.appointment_time);
-                                                const aptTypes = settings.appointment_types || [];
-                                                const aptType = aptTypes.find(t => t.name === apt.reason_for_visit) || aptTypes[0] || { color: '#3b82f6', duration: 30, name: 'Other' };
-                                                const startHour = aptTime.getHours();
-                                                const startMin = aptTime.getMinutes();
-                                                
-                                                // Calculate top position based on 12 AM start (0 mins)
-                                                const totalMins = (startHour * 60 + startMin);
-                                                const top = (totalMins / 60) * 60;
-                                                const height = ((aptType.duration || 30) / 60) * 60;
-
-                                                return (
-                                                    <div
-                                                        key={apt.id}
-                                                        style={{
-                                                            position: 'absolute',
-                                                            top: `${top}px`,
-                                                            left: '4px',
-                                                            right: '4px',
-                                                            height: `${height}px`,
-                                                            backgroundColor: aptType.color + '20',
-                                                            borderLeft: `4px solid ${aptType.color}`,
-                                                            borderRadius: '4px',
-                                                            padding: '8px',
-                                                            fontSize: '11px',
-                                                            zIndex: 10,
-                                                            overflow: 'hidden',
-                                                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                                                            cursor: 'pointer'
-                                                        }}
-                                                    >
-                                                        <div style={{ fontWeight: '800', color: aptType.color }}>{format(aptTime, 'h:mm a')}</div>
-                                                        <div style={{ fontWeight: '700', marginTop: '2px' }}>{apt.patient_name}</div>
-                                                        <div style={{ fontSize: '10px', opacity: 0.7 }}>{aptType.name}</div>
-                                                        {apt.confirmation_status === 'CONFIRMED' && (
-                                                            <div style={{ position: 'absolute', top: '8px', right: '8px' }}>
-                                                                <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--status-completed)' }} />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 )}
