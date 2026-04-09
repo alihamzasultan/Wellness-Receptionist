@@ -153,7 +153,7 @@ export function AppointmentTable({ onView, onEdit, onReschedule, onCancel, onDel
                     </tbody>
                 </table>
                 {filteredAppointments.length === 0 && (
-                    <div style={{ padding: '48px', textAlign: 'center', color: 'var(--muted)', fontStyle: 'italic' }}>No appointments found matching your criteria.</div>
+                    <div style={{ padding: '48px', textAlign: 'center', color: 'var(--muted)', fontStyle: 'italic' }}>No sessions found matching your criteria.</div>
                 )}
             </div>
         </div>
