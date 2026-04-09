@@ -8,7 +8,7 @@ import { User, Phone, Mail, FileText, Clock, AlertTriangle, Bell, MessageSquare,
 function safeFormat(dateStr: string | undefined | null, fmt: string, fallback = 'N/A'): string {
     if (!dateStr) return fallback;
     const d = new Date(dateStr);
-    return isValid(d) ? format(d, fmt) : fallback;
+    return isValid(d) ? format(d, fmt) : fallback;s
 }
 
 interface ViewModalProps {
@@ -210,7 +210,7 @@ export function CancelConfirmationModal({ isOpen, onClose, onConfirm, patientNam
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Cancel Appointment" maxWidth="400px">
+        <Modal isOpen={isOpen} onClose={onClose} title="Cancel Session" maxWidth="400px">
             <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
                     <XCircle size={32} />
@@ -262,7 +262,7 @@ export function RescheduleModal({ isOpen, onClose, appointment, onSave }: { isOp
                 <div style={{ display: 'flex', gap: '12px' }}>
                     <button type="button" onClick={onClose} className="btn" style={{ flex: 1, padding: '12px', border: '1px solid var(--border)', backgroundColor: 'transparent' }}>Cancel</button>
                     <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ flex: 1, padding: '12px' }}>
-                        {isSubmitting ? 'Rescheduling...' : 'Update Appointment'}
+                        {isSubmitting ? 'Rescheduling...' : 'Update Session'}
                     </button>
                 </div>
             </form>
@@ -295,14 +295,14 @@ export function AddAppointmentModal({ isOpen, onClose, onSave }: AddModalProps) 
             onClose();
         } catch (err) {
             console.error(err);
-            alert('Failed to add appointment');
+            alert('Failed to add session');
         } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Book New Appointment">
+        <Modal isOpen={isOpen} onClose={onClose} title="Book New Session">
             <form onSubmit={handleSubmit}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
                     <InputGroup label="Patient Name" value={formData.patient_name || ''} onChange={(val) => setFormData({ ...formData, patient_name: val })} />
@@ -315,7 +315,7 @@ export function AddAppointmentModal({ isOpen, onClose, onSave }: AddModalProps) 
                 <div className="modal-footer">
                     <button type="button" onClick={onClose} className="btn" style={{ padding: '10px 24px', border: '1px solid var(--border)', backgroundColor: 'transparent' }}>Cancel</button>
                     <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ padding: '10px 24px' }}>
-                        {isSubmitting ? 'Creating...' : 'Book Appointment'}
+                        {isSubmitting ? 'Creating...' : 'Book Session'}
                     </button>
                 </div>
             </form>
