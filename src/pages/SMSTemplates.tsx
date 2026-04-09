@@ -285,7 +285,7 @@ export function SMSTemplates() {
                             Preview replaces variables with sample data for verification.
                         </p>
                     </div>
-
+                    {/* 
                     <div className="card" style={{ padding: '24px', backgroundColor: 'var(--primary-light)', border: '1px solid var(--primary)', position: 'relative', overflow: 'hidden' }}>
                         <div style={{ position: 'relative', zIndex: 1 }}>
                             <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
@@ -302,7 +302,7 @@ export function SMSTemplates() {
                                 </code>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
