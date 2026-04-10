@@ -18,7 +18,8 @@ export function Badge({ status }: BadgeProps) {
         completed: { color: 'var(--status-completed)', bg: 'var(--status-completed-bg)' },
     };
 
-    const config = styles[status] || { color: 'var(--muted)', bg: 'var(--input)' };
+    const normalizedStatus = (status || 'booked').toLowerCase();
+    const config = styles[normalizedStatus] || { color: 'var(--muted)', bg: 'var(--input)' };
 
     return (
         <span className="badge" style={{
