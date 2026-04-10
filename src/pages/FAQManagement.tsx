@@ -3,6 +3,7 @@ import { useFAQs, FAQEntry } from '../hooks/useFAQs';
 import { format } from 'date-fns';
 import { Search, Plus, Edit2, Trash2, MessageSquare } from 'lucide-react';
 import { Modal } from '../components/ui/Modal';
+import { ConfirmationModal } from '../components/ui/ConfirmationModal';
 import { useAuth } from '../contexts/AuthContext';
 
 export function FAQManagement() {
@@ -12,7 +13,9 @@ export function FAQManagement() {
 
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [editingFAQ, setEditingFAQ] = useState<Partial<FAQEntry> | null>(null);
+    const [faqToDelete, setFaqToDelete] = useState<string | null>(null);
 
     const filteredFAQs = faqs.filter(f => {
         return (
@@ -125,7 +128,10 @@ export function FAQManagement() {
                                             <Edit2 size={15} />
                                         </button>
                                         <button
-                                            onClick={() => { if (confirm('Delete this entry?')) deleteFAQ(faq.id); }}
+                                            onClick={() => {
+                                                setFaqToDelete(faq.id);
+                                                setIsDeleteModalOpen(true);
+                                            }}
                                             className="btn"
                                             title="Delete"
                                             style={{ padding: '7px', backgroundColor: 'var(--status-cancelled-bg)', color: 'var(--status-cancelled)' }}
@@ -182,6 +188,24 @@ export function FAQManagement() {
                     </div>
                 </form>
             </Modal>
+
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setFaqToDelete(null);
+                }}
+                onConfirm={async () => {
+                    if (faqToDelete) {
+                        await deleteFAQ(faqToDelete);
+                    }
+                }}
+                title="Delete FAQ Entry"
+                message="Are you sure you want to delete this FAQ entry? This action cannot be undone and the AI will no longer be able to use this information."
+                confirmText="Delete Now"
+                cancelText="Keep Entry"
+                type="danger"
+            />
         </div>
     );
 }
